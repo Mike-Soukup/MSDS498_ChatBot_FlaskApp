@@ -25,9 +25,11 @@ def success():
         f2 = request.files["img2"]
         f1.save(f1.filename)
         f2.save(f2.filename)
-        return render_template("acknowledgement.html", 
-        name_1=f1.filename,
-        name_2=f2.filename,)
+        return render_template(
+            "acknowledgement.html",
+            name_1=f1.filename,
+            name_2=f2.filename,
+        )
 
 
 if __name__ == "__main__":
