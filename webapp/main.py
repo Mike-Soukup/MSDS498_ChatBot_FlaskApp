@@ -1,6 +1,6 @@
 """Main Flask App for ChatBot."""
-import os
-from flask import Flask, redirect, render_template, request, url_for
+from fileinput import filename
+from flask import Flask, render_template, request
 
 app = Flask(__name__)
 
@@ -14,10 +14,16 @@ def welcome():
 @app.route("/upload", methods=["GET", "POST"])
 def upload():
     """Upload image."""
+    return render_template("upload.html")
+
+
+@app.route("/success", methods=["POST"])
+def success():
+    """Return ackowledgement of image submission."""
     if request.method == "POST":
-        print("Post")
-    else:
-        return render_template("upload.html")
+        f = request.files["img"]
+        f.save(f.filename)
+        return render_template("acknowledgement.html", name=f.filename)
 
 
 if __name__ == "__main__":
