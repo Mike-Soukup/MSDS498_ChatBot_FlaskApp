@@ -21,9 +21,13 @@ def upload():
 def success():
     """Return ackowledgement of image submission."""
     if request.method == "POST":
-        f = request.files["img"]
-        f.save(f.filename)
-        return render_template("acknowledgement.html", name=f.filename)
+        f1 = request.files["img1"]
+        f2 = request.files["img2"]
+        f1.save(f1.filename)
+        f2.save(f2.filename)
+        return render_template("acknowledgement.html", 
+        name_1=f1.filename,
+        name_2=f2.filename,)
 
 
 if __name__ == "__main__":
