@@ -4,7 +4,7 @@ import numpy as np
 import tensorflow as tf
 
 ## Define prediction function:
-def greedy_search_predict(image1,image2,model = model1):
+def greedy_search_predict(image1,image2,model):
   """
   Given paths to two x-ray images predicts the impression part of the x-ray in a greedy search algorithm
   """
