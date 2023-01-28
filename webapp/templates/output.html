@@ -3,13 +3,22 @@
    <head>
       <title>output</title>
       <style>
-
-
+        .parent{
+            display:flex;
+            gap: 2px;
+        }
       </style>
    </head>
    <body>
     <h1> Prediction </h1>
+    <div class="parent">
+    <div>
         <img src = "{{ image_1 }}" >
+    </div>
+    <div>
         <img src = "{{ image_2 }}">
+    </div>
+    </div>
+    <p> {{ prediction }} </p>
    </body>
 </html>

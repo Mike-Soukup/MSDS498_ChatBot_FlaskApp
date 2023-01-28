@@ -46,6 +46,8 @@ def output():
         f1 = request.files["img1"]
         f2 = request.files["img2"]
 
+        prediction = "no acute cardiopulmonary findings"
+
         # Extract uploaded data files
         img1_filename = secure_filename(f1.filename)
         img2_filename = secure_filename(f2.filename)
@@ -62,6 +64,7 @@ def output():
             "output.html",
             image_1=img1_path,
             image_2=img2_path,
+            prediction = prediction,
         )
 
 
