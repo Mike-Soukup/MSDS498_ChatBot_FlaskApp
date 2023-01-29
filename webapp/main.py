@@ -1,8 +1,9 @@
 """Main Flask App for ChatBot."""
 from fileinput import filename
 import os
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, send_from_directory
 from werkzeug.utils import secure_filename
+from PIL import Image
 
 # Define upload folder path:
 UPLOAD_FOLDER = os.path.join("static",'uploads')
@@ -29,18 +30,31 @@ def text_output():
         msg = str(request.form["usr_input"])
         return jsonify({'data':msg})
 
-
 @app.route("/text_api")
 def text_api():
     """Demo Text API"""
     data = "Hello World!"
     return jsonify({'data':data})
 
+@app.route("/output_img_rest", methods = ['POST'])
+def img_api():
+    """Demo Image API"""
+    if request.method == "POST":
+        img = request.files["img"]
+        img_filename = secure_filename(img.filename)
+        img.save(os.path.join(app.config['UPLOAD_FOLDER'], img_filename))
+
+        return send_from_directory("static/uploads", img_filename)
 
 @app.route("/upload", methods=["GET", "POST"])
 def upload():
     """Upload image."""
     return render_template("upload.html")
+
+@app.route("/upload_img_rest", methods=["GET", "POST"])
+def upload_img_rest():
+    """Upload image for REST API."""
+    return render_template("upload_img_rest.html")
 
 @app.route("/output", methods=["POST"])
 def output():
@@ -70,7 +84,6 @@ def output():
             image_2=img2_path,
             prediction = prediction,
         )
-
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8080, debug=True)
