@@ -34,3 +34,6 @@
     - Maybe due to pushing from local git...
         - Not sure why but using GitHub would likely be a better approach
     - Can submit an issue and see what is going on...
+
+
+### Test increasing http.postBuffer to push code to Azure
