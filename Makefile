@@ -5,7 +5,7 @@ gitpod:
 	sudo apt-get update && sudo apt-get install libgl1
 
 azure:
-	git config --global http.postBuffer 157286400
+	git config --global http.postBuffer 2147483648
 	git gc --aggressive
 	git remote remove azure
 	git remote add azure https://demorestapimsds498.scm.azurewebsites.net:443/demorestapimsds498.git
