@@ -41,4 +41,4 @@
 - Remove remote azure and add back: `git remote remove azure` && `git remote add https://demorestapimsds498.scm.azurewebsites.net:443/demorestapimsds498.git`
 - Added to Makefile as make azure
 
-## Test push azure
+## Test push azure try again
