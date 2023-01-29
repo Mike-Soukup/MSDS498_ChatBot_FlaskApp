@@ -3,7 +3,6 @@ from fileinput import filename
 import os
 from flask import Flask, render_template, request, jsonify, send_from_directory
 from werkzeug.utils import secure_filename
-from PIL import Image
 
 # Define upload folder path:
 UPLOAD_FOLDER = os.path.join("static",'uploads')
