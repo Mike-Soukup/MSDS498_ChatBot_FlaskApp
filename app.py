@@ -22,6 +22,11 @@ def generate_text():
     """User input text."""
     return render_template("gen_text.html")
 
+@app.route("/api/text_echo", methods = ['POST'])
+def text_echo():
+    """Echo user input text from REST POST."""
+    return jsonify(request.json)
+
 @app.route("/send_text", methods = ["POST"])
 def text_output():
     """Send Text output as JSON."""
