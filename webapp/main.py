@@ -1,7 +1,7 @@
 """Main Flask App for ChatBot."""
 from fileinput import filename
 import os
-from flask import Flask, render_template, request, session
+from flask import Flask, render_template, request, jsonify
 from werkzeug.utils import secure_filename
 
 # Define upload folder path:
@@ -17,26 +17,30 @@ def welcome():
     """Chatbot API Home Page."""
     return render_template("home.html")
 
+@app.route("/generate_text", methods=["GET", "POST"])
+def generate_text():
+    """User input text."""
+    return render_template("gen_text.html")
+
+@app.route("/send_text", methods = ["POST"])
+def text_output():
+    """Send Text output as JSON."""
+    if request.method == "POST":
+        msg = str(request.form["usr_input"])
+        return jsonify({'data':msg})
+
+
+@app.route("/text_api")
+def text_api():
+    """Demo Text API"""
+    data = "Hello World!"
+    return jsonify({'data':data})
+
 
 @app.route("/upload", methods=["GET", "POST"])
 def upload():
     """Upload image."""
     return render_template("upload.html")
-
-
-# @app.route("/success", methods=["POST"])
-# def success():
-#     """Return ackowledgement of image submission."""
-#     if request.method == "POST":
-#         f1 = request.files["img1"]
-#         f2 = request.files["img2"]
-#         f1.save(f1.filename)
-#         f2.save(f2.filename)
-#         return render_template(
-#             "acknowledgement.html",
-#             name_1= f1.filename,
-#             name_2=f2.filename,
-#         )
 
 @app.route("/output", methods=["POST"])
 def output():
