@@ -9,6 +9,11 @@
 
 ### Functionality:
 
+#### ChatBot Functionality:
+- Visit: https://msds498swam.azurewebsites.net
+- Demo REST API Test:
+    - Type `begin demo_rest_api` ask a question, and the API Endpoint hit will return your question!
+
 ##### Demo Prediction:
 - This webapp will direct the user to upload an image file.
 - Once the image file is submitted, an acknowledgement will be shared.
@@ -40,5 +45,3 @@
 - Increase HTTP Post Buffer: `git config --global http.postBuffer 157286400`
 - Remove remote azure and add back: `git remote remove azure` && `git remote add https://demorestapimsds498.scm.azurewebsites.net:443/demorestapimsds498.git`
 - Added to Makefile as make azure
-
-## Test push azure try again
