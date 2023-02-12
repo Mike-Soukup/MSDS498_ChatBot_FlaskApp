@@ -40,6 +40,10 @@
         - Not sure why but using GitHub would likely be a better approach
     - Can submit an issue and see what is going on...
 
+### 2022-02-12 Comments:
+- Still having deployment issues. Not a robust process
+- Image recognition feature is working in dev environment.
+
 ### Fix Azure Deployment:
 - Garbage Collect: `git gc --aggressive`
 - Increase HTTP Post Buffer: `git config --global http.postBuffer 157286400`
