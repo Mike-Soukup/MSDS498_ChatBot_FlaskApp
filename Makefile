@@ -10,3 +10,7 @@ azure:
 	git remote remove azure
 	git remote add azure https://demorestapimsds498.scm.azurewebsites.net:443/demorestapimsds498.git
 	git push azure
+
+gcloud:
+	curl -O https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-cli-417.0.1-linux-x86_64.tar.gz
+	tar -xf google-cloud-cli-417.0.1-linux-x86_64.tar.gz 
