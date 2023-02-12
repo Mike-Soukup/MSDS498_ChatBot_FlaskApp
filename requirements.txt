@@ -16,7 +16,9 @@ google-pasta==0.2.0
 grpcio==1.51.1
 h5py==3.8.0
 itsdangerous==2.1.2
+joblib==1.2.0
 keras==2.11.0
+Keras-Preprocessing==1.1.2
 libclang==15.0.6.1
 Markdown==3.4.1
 MarkupSafe==2.1.2
