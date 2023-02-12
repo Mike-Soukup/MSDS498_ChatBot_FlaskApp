@@ -212,9 +212,19 @@ def greedy_search_predict(image1,image2,model, tokenizer):
       a.append(tf.squeeze(max_prob).numpy())
   return tokenizer.sequences_to_texts([a])[0] #here output would be 1,1 so subscripting to open the array
 
-#For prediction
-image_1 = r'./static/uploads/CXR2_IM-0652-2001.png'
-image_2 = r'./static/uploads/CXR3_IM-1384-1001.png'
-model,tokenizer=create_model()
-predicted_caption=greedy_search_predict(image_1,image_2,model,tokenizer)
-print(predicted_caption)
+# Prediction Function:
+
+def make_prediction(image_1, image_2):
+    '''Driver function to make prediction.'''
+    image_1 = f"./{image_1}"
+    image_2 = f"./{image_2}"
+    model,tokenizer=create_model()
+    predicted_caption=greedy_search_predict(image_1,image_2,model,tokenizer)
+    return predicted_caption
+
+# #For prediction
+# image_1 = r'./static/uploads/CXR2_IM-0652-2001.png'
+# image_2 = r'./static/uploads/CXR3_IM-1384-1001.png'
+# model,tokenizer=create_model()
+# predicted_caption=greedy_search_predict(image_1,image_2,model,tokenizer)
+# print(predicted_caption)

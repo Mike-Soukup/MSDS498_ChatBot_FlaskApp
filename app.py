@@ -3,6 +3,7 @@ from fileinput import filename
 import os
 from flask import Flask, render_template, request, jsonify, send_from_directory
 from werkzeug.utils import secure_filename
+from img_etl import make_prediction
 
 # Define upload folder path:
 UPLOAD_FOLDER = os.path.join("static",'uploads')
@@ -68,8 +69,6 @@ def output():
         f1 = request.files["img1"]
         f2 = request.files["img2"]
 
-        prediction = "no acute cardiopulmonary findings"
-
         # Extract uploaded data files
         img1_filename = secure_filename(f1.filename)
         img2_filename = secure_filename(f2.filename)
@@ -81,6 +80,8 @@ def output():
         # Create file path:
         img1_path = os.path.join(app.config['UPLOAD_FOLDER'], img1_filename)
         img2_path = os.path.join(app.config['UPLOAD_FOLDER'], img2_filename)
+
+        prediction = make_prediction(img1_path, img2_path)
 
         return render_template(
             "output.html",
