@@ -1,6 +1,6 @@
 # Install or update needed software
 sudo apt-get update
-sduo apt-get install -yq git supervisor python python-pip python3-distutils
+sudo apt-get install -yq git supervisor python python-pip python3-distutils
 pip install --upgrade pip virtualenv
 
 # Fetch source code
