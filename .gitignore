@@ -103,8 +103,5 @@ ENV/
 # mypy
 .mypy_cache/
 
-# gcloudignore
-.gcloudignore
-
 # gitpod.yml
 .gitpod.yml
