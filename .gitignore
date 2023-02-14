@@ -105,3 +105,6 @@ ENV/
 
 # gitpod.yml
 .gitpod.yml
+
+# pycahce
+__pycache__
