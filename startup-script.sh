@@ -14,7 +14,7 @@ sudo bash /opt/app/gce/add-google-cloud-ops-agent-repo.sh --also-install
 useradd -m -d /home/pythonapp pythonapp
 
 # Python environment setup
-virtualenv -p python3 /opt/app/gce/env
+virtualenv -p python3 /opt/app/MSDS498_CHATBOT_FLASKAPP
 /bin/bash -c "source /opt/app/gce/env/bin/activate"
 /opt/app/gce/env/bin/pip install -r /opt/app/gce/requirements.txt
 
