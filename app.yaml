@@ -13,6 +13,8 @@
 # limitations under the License.
 
 runtime: python39
+skip_files:
+- https://storage.googleapis.com/staging.msds498healthbot.appspot.com/635304448549d3566ee9ece333944f5258d1eb66
 
 handlers:
   # This configures Google App Engine to serve the files in the app's static
