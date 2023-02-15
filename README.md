@@ -50,4 +50,5 @@
 - Remove remote azure and add back: `git remote remove azure` && `git remote add https://demorestapimsds498.scm.azurewebsites.net:443/demorestapimsds498.git`
 - Added to Makefile as make azure
 
-### Add .gcloudignore
+
+### Get ready for split deployment efforts
