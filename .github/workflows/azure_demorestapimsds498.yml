@@ -28,8 +28,8 @@ jobs:
           source venv/bin/activate
       - name: Make virtual environment compatible
         run: |
-          apt-get update
-          apt-get install libgl1
+          sudo apt-get update
+          sudo apt-get install libgl1
       - name: Install dependencies
         run: pip install -r requirements.txt
         
