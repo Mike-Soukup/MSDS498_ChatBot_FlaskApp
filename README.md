@@ -52,4 +52,4 @@
 - Oryx Python Detection https://github.com/microsoft/Oryx/blob/main/doc/runtimes/python.md 
 - Azure App Service looks for a file named app.py
 
-### Get ready for split deployment efforts
+### Get ready for split deployment efforts take 2
