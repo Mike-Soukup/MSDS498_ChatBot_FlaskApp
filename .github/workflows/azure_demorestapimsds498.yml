@@ -29,7 +29,7 @@ jobs:
       - name: Make virtual environment compatible
         run: |
           sudo apt-get update
-          sudo apt-get install libgl1
+          sudo apt-get -y install libgl1
       - name: Install dependencies
         run: pip install -r requirements.txt
         

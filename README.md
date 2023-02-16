@@ -51,3 +51,5 @@
 - Added to Makefile as make azure
 - Oryx Python Detection https://github.com/microsoft/Oryx/blob/main/doc/runtimes/python.md 
 - Azure App Service looks for a file named app.py
+
+## New app service
