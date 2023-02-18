@@ -28,6 +28,10 @@ def text_echo():
     """Echo user input text from REST POST."""
     return jsonify(request.json)
 
+@app.route("/api/image", methods = ["POST"])
+def recieve_img():
+    return jsonify(request.json)
+
 @app.route("/send_text", methods = ["POST"])
 def text_output():
     """Send Text output as JSON."""
