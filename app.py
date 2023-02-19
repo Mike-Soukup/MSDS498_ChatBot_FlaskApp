@@ -8,9 +8,6 @@ from PIL import Image
 import requests
 from io import BytesIO
 
-response = requests.get(url)
-img = Image.open(BytesIO(response.content))
-
 # Define upload folder path:
 UPLOAD_FOLDER = os.path.join("static",'uploads')
 # Define allowed files:
