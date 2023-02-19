@@ -4,6 +4,12 @@ import os
 from flask import Flask, render_template, request, jsonify, send_from_directory
 from werkzeug.utils import secure_filename
 from img_etl import make_prediction
+from PIL import Image
+import requests
+from io import BytesIO
+
+response = requests.get(url)
+img = Image.open(BytesIO(response.content))
 
 # Define upload folder path:
 UPLOAD_FOLDER = os.path.join("static",'uploads')
@@ -93,6 +99,38 @@ def output():
             image_2=img2_path,
             prediction = prediction,
         )
+
+@app.route("/api/chatbot_img_prediction", methods = ["POST"])
+def chatbot_img_prediction():
+    # Get uploaded files
+    r = request.json()
+
+    #Get image names:
+    img1_name = r["name1"]
+    img2_name = r["name2"]
+    #Get image locations:
+    img1_url = r["contentUrl1"]
+    img2_url = r["contentUrl2"]
+    #Get images:
+    img1_resp = requests.get(img1_url)
+    img2_resp = requests.get(img2_url)
+    img1 = Image.open(BytesIO(img1_resp.content))
+    img2 = Image.open(BytesIO(img2_resp.content))
+
+    #Save images:
+    img1.save(os.path.join(app.config['UPLOAD_FOLDER'], img1_name))
+    img2.save(os.path.join(app.config['UPLOAD_FOLDER'], img2_name))
+
+    # Create file path:
+    img1_path = os.path.join(app.config['UPLOAD_FOLDER'], img1_name)
+    img2_path = os.path.join(app.config['UPLOAD_FOLDER'], img2_name)
+
+    prediction = make_prediction(img1_path, img2_path)
+
+    payload = {"response":prediction}
+
+    return jsonify(payload)
+
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0")
