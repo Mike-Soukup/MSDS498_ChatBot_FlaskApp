@@ -7,14 +7,17 @@ from img_etl import make_prediction
 from PIL import Image
 import requests
 from io import BytesIO
+import json
 
 # Define upload folder path:
 UPLOAD_FOLDER = os.path.join("static",'uploads')
+RESPONSE_FOLDER = os.path.join("response")
 # Define allowed files:
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['RESPONSE_FOLDER'] = RESPONSE_FOLDER
 
 @app.route("/")
 def welcome():
@@ -97,37 +100,48 @@ def output():
             prediction = prediction,
         )
 
-@app.route("/api/chatbot_img_prediction", methods = ["POST"])
+@app.route("/api/chatbot_img_prediction", methods = ["GET","POST"])
 def chatbot_img_prediction():
-    # Get uploaded files
-    r = request.json()
+    if request.method == "POST":
+        # Get uploaded files
+        r = request.json
+        #Get image names:
+        img1_name = r["name1"]
+        img2_name = r["name2"]
+        #Get image locations:
+        img1_url = r["contentUrl1"]
+        img2_url = r["contentUrl2"]
+        #Get images:
+        img1_resp = requests.get(img1_url)
+        img2_resp = requests.get(img2_url)
+        img1 = Image.open(BytesIO(img1_resp.content))
+        img2 = Image.open(BytesIO(img2_resp.content))
 
-    #Get image names:
-    img1_name = r["name1"]
-    img2_name = r["name2"]
-    #Get image locations:
-    img1_url = r["contentUrl1"]
-    img2_url = r["contentUrl2"]
-    #Get images:
-    img1_resp = requests.get(img1_url)
-    img2_resp = requests.get(img2_url)
-    img1 = Image.open(BytesIO(img1_resp.content))
-    img2 = Image.open(BytesIO(img2_resp.content))
+        #Save images:
+        img1.save(os.path.join(app.config['UPLOAD_FOLDER'], img1_name))
+        img2.save(os.path.join(app.config['UPLOAD_FOLDER'], img2_name))
 
-    #Save images:
-    img1.save(os.path.join(app.config['UPLOAD_FOLDER'], img1_name))
-    img2.save(os.path.join(app.config['UPLOAD_FOLDER'], img2_name))
+        # Create file path:
+        img1_path = os.path.join(app.config['UPLOAD_FOLDER'], img1_name)
+        img2_path = os.path.join(app.config['UPLOAD_FOLDER'], img2_name)
 
-    # Create file path:
-    img1_path = os.path.join(app.config['UPLOAD_FOLDER'], img1_name)
-    img2_path = os.path.join(app.config['UPLOAD_FOLDER'], img2_name)
+        prediction = make_prediction(img1_path, img2_path)
 
-    prediction = make_prediction(img1_path, img2_path)
+        img_prediction = {"img_prediction":prediction}
 
-    payload = {"response":prediction}
+        # Open a file for writing
+        with open(os.path.join(app.config['RESPONSE_FOLDER'], 'img_pred.json'), 'w') as f:
+            # Write the dictionary to the file
+            json.dump(img_prediction, f)
 
-    return jsonify(payload)
+        return 'prediction saved'
+
+    if request.method == "GET":
+        with open(os.path.join(app.config['RESPONSE_FOLDER'], 'img_pred.json'), "r") as f:
+            # Load the JSON data from the file
+            prediction = json.load(f)
+        return jsonify(prediction)
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0")
+    app.run(host="0.0.0.0", debug = True)
