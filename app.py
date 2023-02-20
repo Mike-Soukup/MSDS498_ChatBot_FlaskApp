@@ -106,6 +106,8 @@ def chatbot_img_prediction():
         # Get uploaded files
         r = request.json
         #Get image names:
+        global img1_name
+        global img2_name
         img1_name = r["name1"]
         img2_name = r["name2"]
         #Get image locations:
@@ -140,6 +142,10 @@ def chatbot_img_prediction():
         with open(os.path.join(app.config['RESPONSE_FOLDER'], 'img_pred.json'), "r") as f:
             # Load the JSON data from the file
             prediction = json.load(f)
+        ### File clean up
+        os.remove(os.path.join(app.config['RESPONSE_FOLDER'], 'img_pred.json'))
+        os.remove(os.path.join(app.config['UPLOAD_FOLDER'], img1_name))
+        os.remove(os.path.join(app.config['UPLOAD_FOLDER'], img2_name))
         return jsonify(prediction)
 
 
