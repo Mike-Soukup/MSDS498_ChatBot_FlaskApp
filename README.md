@@ -4,7 +4,7 @@
 
 1. Activate the virtual environment: `source .flaskapp/bin/activate`
 2. Start the Flask App: `python3 app.py`
-3. Look at App: Go to localhost:8080
+3. Look at App: Go to localhost:5000
 
 
 ### Functionality:
@@ -52,4 +52,4 @@
 - Oryx Python Detection https://github.com/microsoft/Oryx/blob/main/doc/runtimes/python.md 
 - Azure App Service looks for a file named app.py
 
-## New app service -- US East for Basic Plan
+## New app service -- US East for Basic Plan -- Try 2
