@@ -2,9 +2,8 @@ import tensorflow as tf
 import numpy as np
 import pandas as pd
 import re
-import os
-import csv
-from tqdm import tqdm
+from itertools import groupby
+import string
 import faiss
 from datetime import datetime
 from transformers import AutoTokenizer, TFGPT2Model
@@ -71,7 +70,7 @@ from transformers import GPT2Tokenizer,TFGPT2LMHeadModel
 def return_gpt2_tokenizer_model():
     '''returns pretrained gpt2 tokenizer and gpt2 model'''
     gpt2_tokenizer=GPT2Tokenizer.from_pretrained("gpt2")
-    tf_gpt2_model=TFGPT2LMHeadModel.from_pretrained("./static/medical_gpt2_model_new_2_104_90000")
+    tf_gpt2_model=TFGPT2LMHeadModel.from_pretrained("./static/medical_gpt2_model_new_2_107")
     return gpt2_tokenizer,tf_gpt2_model
 
 #preparing the faiss search
@@ -138,18 +137,23 @@ def predict(question,answer_len=50):
             max_length = 1024,
             # top_k = 20, 
             # top_p = 0.85,
-            temperature = 0.7,
+            #temperature = 0.9,
             # num_beams=3, 
             # no_repeat_ngram_size=2, 
             # num_return_sequences=1, 
             # early_stopping=True,
             # top_k = 0,
             # top_p = 0.9,
-            # repetition_penalty = 1,
+            #repetition_penalty = 0.9,
             # do_sample = True,
             # num_return_sequences = 1,
             # do_sample=True, 
             # top_k=0,
+            #no_repeat_ngram_size=3,       
+            #do_sample=True, 
+            #top_k=0, 
+            #top_p=0.1,
+            temperature=0.7,
             pad_token_id=gpt2_tokenizer.eos_token_id
         )
     ans = []
@@ -159,21 +163,44 @@ def predict(question,answer_len=50):
         ans.append(gpt2_output[answer+len('`ANSWER: '):])
     return ans
 
-def main():
-    # st.title('SWAM Health Chatbot')
-    question="what are the signs of a heart attack"
-    result=""
-    #if st.button('ask'):
-    start=datetime.now()
-    results=predict(question, answer_len = 25)
-    end_time =datetime.now()
-    # st.success("Here is the answer")
-    for result in results:
-        print(result)
-    print("result recieved within "+str((end_time-start).total_seconds()))
+# def main():
+#     # st.title('SWAM Health Chatbot')
+#     #question="what are the signs of heart attack?"
+#     #question = 'How do i know if i am pregnant?'
+#     #question= 'pink eye can be contagious?'
+#     #question= 'what should i do if my baby is vomiting?'
+#     #question= 'How to stop migraine attack?'
+#     #question= 'why my eyes hurts' #not very apt
+#     #question = 'what should i do to avoid backaches'
+#     question = 'How to prevent stomach flu?'
+#     result=""
+#     #if st.button('ask'):
+#     start=datetime.now()
+#     results=predict(question, answer_len = 25)
+#     end_time =datetime.now()
+#     l=results[0].split()
+#     e=[]
+#     for i in l:
+#         if (results[0].count(i)>=1 and (i not in e)):
+#             e.append(i)
+#     print(' '.join(e))    
+#     # Remove punctuation
+#     # sent_map = results[0].maketrans(dict.fromkeys(string.punctuation))
+#     # sent_clean = results[0].translate(sent_map)
+#     # no_dupes = ([k for k, v in groupby(sent_clean.split())])
+#     # #print('No duplicates:', no_dupes)
 
-if __name__=='__main__':
-    main()
+#     # # Put the list back together into a sentence
+#     # groupby_output = ' '.join(no_dupes)
+#     # print('No duplicates:', groupby_output)
+#     # st.success("Here is the answer")
+#     # for result in results:
+#     #     print(result)
+#     # print('\n'+results[0])
+#     print("\nresult recieved within "+str((end_time-start).total_seconds()))
+
+# if __name__=='__main__':
+#     main()
 
 
 

@@ -4,6 +4,7 @@ import os
 from flask import Flask, render_template, request, jsonify, send_from_directory
 from werkzeug.utils import secure_filename
 from img_etl import make_prediction
+from medbot import predict
 from PIL import Image
 import requests
 from io import BytesIO
@@ -28,6 +29,11 @@ def welcome():
 def generate_text():
     """User input text."""
     return render_template("gen_text.html")
+
+@app.route("/gpt2chatbot", methods=["GET", "POST"])
+def gpt2chatbot():
+    """User input text."""
+    return render_template("gpt2_healthbot.html")
 
 @app.route("/api/text_echo", methods = ['POST'])
 def text_echo():
@@ -147,6 +153,23 @@ def chatbot_img_prediction():
         os.remove(os.path.join(app.config['UPLOAD_FOLDER'], img1_name))
         os.remove(os.path.join(app.config['UPLOAD_FOLDER'], img2_name))
         return jsonify(prediction)
+
+@app.route("/api/invoke_gpt2", methods = ["GET","POST"])
+def chatbot_text_prediction():
+    if request.method == "GET":
+        # Get uploaded files
+        question = request.args.get('msg')
+        # #question:
+        # global question
+
+        answer = predict(question, 25)
+        words=answer[0].split()
+        final_ans=[]
+        for i in words:
+            if (answer[0].count(i)>=1 and (i not in final_ans)):
+                final_ans.append(i)
+
+        return ' '.join(final_ans)
 
 
 if __name__ == "__main__":
