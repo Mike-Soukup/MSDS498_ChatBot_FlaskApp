@@ -57,7 +57,7 @@ def preprocess(text):
     #importing bert tokenizer and loading the trained question embedding extractor model
 
 
-@st.cache(allow_output_mutation=True)
+#@st.cache(allow_output_mutation=True)
 def return_biobert_tokenizer_model():
     '''returns pretrained biobert tokenizer and question extractor model'''
     biobert_tokenizer = AutoTokenizer.from_pretrained("cambridgeltl/BioRedditBERT-uncased")
@@ -67,7 +67,7 @@ def return_biobert_tokenizer_model():
 
 #importing gpt2 tokenizer and loading the trained gpt2 model
 from transformers import GPT2Tokenizer,TFGPT2LMHeadModel
-@st.cache(allow_output_mutation=True)
+#@st.cache(allow_output_mutation=True)
 def return_gpt2_tokenizer_model():
     '''returns pretrained gpt2 tokenizer and gpt2 model'''
     gpt2_tokenizer=GPT2Tokenizer.from_pretrained("gpt2")
@@ -75,7 +75,7 @@ def return_gpt2_tokenizer_model():
     return gpt2_tokenizer,tf_gpt2_model
 
 #preparing the faiss search
-qa=pd.read_pickle('./train_gpt_data.pkl')
+qa=pd.read_pickle('./static/train_gpt_data.pkl')
 question_bert = qa["Q_FFNN_embeds"].tolist()
 answer_bert = qa["A_FFNN_embeds"].tolist()
 question_bert = np.array(question_bert)
@@ -114,7 +114,7 @@ def preparing_gpt_inference_data(gpt2_tokenizer,question,question_embedding):
       break
   return gpt2_tokenizer.encode(line)[-1024:]
 
-def predict(question,answer_len):
+def predict(question,answer_len=50):
     preprocessed_question=preprocess(question)
     question_len=len(preprocessed_question.split(' '))
     truncated_question=preprocessed_question
@@ -136,18 +136,18 @@ def predict(question,answer_len):
     output_sequences = tf_gpt2_model.generate(
             input_ids =tf.constant([np.array(input)]),
             max_length = 1024,
-            top_k = 20, 
-            top_p = 0.85,
-            temperature = 0.0,
+            # top_k = 20, 
+            # top_p = 0.85,
+            temperature = 0.7,
             # num_beams=3, 
-            #no_repeat_ngram_size=2, 
+            # no_repeat_ngram_size=2, 
             # num_return_sequences=1, 
-            early_stopping=True,
+            # early_stopping=True,
             # top_k = 0,
             # top_p = 0.9,
             # repetition_penalty = 1,
-            do_sample = True,
-            num_return_sequences = 3,
+            # do_sample = True,
+            # num_return_sequences = 1,
             # do_sample=True, 
             # top_k=0,
             pad_token_id=gpt2_tokenizer.eos_token_id
@@ -159,21 +159,21 @@ def predict(question,answer_len):
         ans.append(gpt2_output[answer+len('`ANSWER: '):])
     return ans
 
-# def main():
-#     st.title('SWAM Health Chatbot')
-#     question=st.text_input('Question',"Type Here")
-#     result=""
-#     if st.button('ask'):
-#         start=datetime.now()
-#         results=predict(question)
-#         end_time =datetime.now()
-#         st.success("Here is the answer")
-#         for result in results:
-#             st.text(result)
-#         st.text("result recieved within "+str((end_time-start).total_seconds()))
+def main():
+    # st.title('SWAM Health Chatbot')
+    question="what are the signs of a heart attack"
+    result=""
+    #if st.button('ask'):
+    start=datetime.now()
+    results=predict(question, answer_len = 25)
+    end_time =datetime.now()
+    # st.success("Here is the answer")
+    for result in results:
+        print(result)
+    print("result recieved within "+str((end_time-start).total_seconds()))
 
-# if __name__=='__main__':
-#     main()
+if __name__=='__main__':
+    main()
 
 
 
