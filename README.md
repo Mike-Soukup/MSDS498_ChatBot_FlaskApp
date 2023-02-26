@@ -3,53 +3,42 @@
 ### To Run:
 
 1. Activate the virtual environment: `source .flaskapp/bin/activate`
+2. Install requirements `pip install -r requirements.txt`
 2. Start the Flask App: `python3 app.py`
 3. Look at App: Go to localhost:5000
 
 
 ### Functionality:
 
-#### ChatBot Functionality:
+#### SWAM Azure:
+- Select `Talk to SWAM Azure` OR...
 - Visit: https://msds498swam.azurewebsites.net
-- Demo REST API Test:
-    - Type `begin demo_rest_api` ask a question, and the API Endpoint hit will return your question!
+- You can ask:
+    - Ask a medical question and get a response
+    - Submit chest X-Rays for diagnosis
+    - Schedule a doctor's appointment
+    - Enter `help` to see what other features are available
 
-##### Demo Prediction:
-- This webapp will direct the user to upload an image file.
-- Once the image file is submitted, an acknowledgement will be shared.
-- File will be placed in the `static/uploads` directory
+#### SWAM GPT-2
+- Select `Talk to SWAM GPT-2`
+- Have a conversation with a Artificial Intelligent Bot trained to answer medical inquiries
 
-##### Demo Text API:
-- Either ping an API text output
-- OR can user input text that will be sent back as a JSON.
+#### X-Ray Prediciton
+- Select `X-Ray Prediction`
+- Provide a frontal and profile chest X-Ray and recieve a cardiopulmonary diagnosis from an AI trained engine.
 
-##### Demo Image API:
-- Submit and Image and see how API Endpoint will provide content back to user.
+#### Docker
+- Select `Docker`
+- You will be directed to DockerHub where you can download an image of our application.
 
-### To Do:
-- Demonstrate the Azure Health Bot can hit our API endpoint and "talk" with it.
-- Data quality testing to ensure only specific files are upload...
-    - .png
-    - .jpeg
-        - Will raise errors if files like .txt, .docx, .xml, etc. are uploaded.
+#### Text Echo API
+- Select `Text Echo API`
+- This will demonstrate the REST API functionality that powers our app by providing an example JSON payload from user generated text. 
 
-### 2022-01-28 Comments:
-- For reference: You can report issues at https://github.com/Microsoft/Oryx/issues
-- Having issues pushing code to azure for development updates
-    - Maybe due to pushing from local git...
-        - Not sure why but using GitHub would likely be a better approach
-    - Can submit an issue and see what is going on...
+#### Text Text REST API
+- Select `Test Text REST API`
+- This is a Hello World! of REST APIs. A simple JSON payload will be created. 
 
-### 2022-02-12 Comments:
-- Still having deployment issues. Not a robust process
-- Image recognition feature is working in dev environment.
-
-### Fix Azure Deployment:
-- Garbage Collect: `git gc --aggressive`
-- Increase HTTP Post Buffer: `git config --global http.postBuffer 157286400`
-- Remove remote azure and add back: `git remote remove azure` && `git remote add https://demorestapimsds498.scm.azurewebsites.net:443/demorestapimsds498.git`
-- Added to Makefile as make azure
-- Oryx Python Detection https://github.com/microsoft/Oryx/blob/main/doc/runtimes/python.md 
-- Azure App Service looks for a file named app.py
-
-## New app service -- US East for Basic Plan -- Try 2
+#### Image Upload Demo
+- Select `Image Upload Demo`
+- Demonstrate how users can upload images through an HTTP form to the `static/uploads` folder. 
