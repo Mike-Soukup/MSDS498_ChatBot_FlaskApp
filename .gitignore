@@ -108,3 +108,6 @@ ENV/
 
 # gitpod.yml
 .gitpod.yml
+
+# Don't push large model files:
+train_gpt_data.pkl
