@@ -106,6 +106,35 @@ def output():
             prediction = prediction,
         )
 
+@app.route("/api/uploadImage", methods=["POST"])
+def uploadImage():
+    """Return output of image submission."""
+    if request.method == "POST":
+        if 'files[]' not in request.files:
+            resp = jsonify({'message' : 'No file part in the request'})
+            resp.status_code = 400
+            return resp
+
+        # Get uploaded files
+        f1 = request.files.getlist('files[]')
+
+        # Extract uploaded data files
+        img1_filename = secure_filename(f1[0].filename)
+        img2_filename = secure_filename(f1[0].filename)
+
+        # Upload file:
+        f1[0].save(os.path.join(app.config['UPLOAD_FOLDER'], img1_filename))
+        f1[0].save(os.path.join(app.config['UPLOAD_FOLDER'], img2_filename))
+
+        # Create file path:
+        img1_path = os.path.join(app.config['UPLOAD_FOLDER'], img1_filename)
+        img2_path = os.path.join(app.config['UPLOAD_FOLDER'], img2_filename)
+
+        prediction = make_prediction(img1_path, img2_path)
+
+        return prediction
+
+
 @app.route("/api/chatbot_img_prediction", methods = ["GET","POST"])
 def chatbot_img_prediction():
     if request.method == "POST":
@@ -170,6 +199,7 @@ def chatbot_text_prediction():
                 final_ans.append(i)
 
         return ' '.join(final_ans)
+        # return answer
 
 
 if __name__ == "__main__":
