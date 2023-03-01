@@ -1,11 +1,13 @@
-import joblib
+import base64
 import cv2
+import joblib
 import pathlib
 import numpy as np
 import os
 import keras
 from keras import Input
 import tensorflow as tf
+
 
 # Variables
 input_size=(224,224)
@@ -181,8 +183,9 @@ def greedy_search_predict(image1,image2,model, tokenizer):
   """
   Given paths to two x-ray images predicts the impression part of the x-ray in a greedy search algorithm
   """
-  image1 = cv2.imread(image1,cv2.IMREAD_UNCHANGED)/255 
-  image2 = cv2.imread(image2,cv2.IMREAD_UNCHANGED)/255
+  # image1 = cv2.imread(image1,cv2.IMREAD_UNCHANGED)/255 
+  # image2 = cv2.imread(image2,cv2.IMREAD_UNCHANGED)/255
+
   image1 = tf.expand_dims(cv2.resize(image1,input_size,interpolation = cv2.INTER_NEAREST),axis=0) #introduce batch and resize
   image2 = tf.expand_dims(cv2.resize(image2,input_size,interpolation = cv2.INTER_NEAREST),axis=0)
   image1 = model.get_layer('image_encoder')(image1)
@@ -219,8 +222,25 @@ def make_prediction(image_1, image_2):
     image_1 = f"./{image_1}"
     image_2 = f"./{image_2}"
     model,tokenizer=create_model()
+    image1 = cv2.imread(image1,cv2.IMREAD_UNCHANGED)/255 
+    image2 = cv2.imread(image2,cv2.IMREAD_UNCHANGED)/255
     predicted_caption=greedy_search_predict(image_1,image_2,model,tokenizer)
     return predicted_caption
+    
+def ImageCaptionPredict(imgPath):
+    '''Driver function to make prediction.'''
+    img = data_uri_to_cv2_img(imgPath)
+    model,tokenizer=create_model()
+    img = img/255
+    predicted_caption=greedy_search_predict(img,img,model,tokenizer)
+    return predicted_caption
+
+def data_uri_to_cv2_img(uri):
+    encoded_data = uri.split(',')[1]
+    im_bytes = base64.b64decode(encoded_data)
+    nparr = np.frombuffer(im_bytes, np.uint8)
+    img = cv2.imdecode(nparr, cv2.IMREAD_UNCHANGED)
+    return img
 
 # #For prediction
 # image_1 = r'./static/uploads/CXR2_IM-0652-2001.png'

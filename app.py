@@ -3,7 +3,7 @@ from fileinput import filename
 import os
 from flask import Flask, render_template, request, jsonify, send_from_directory
 from werkzeug.utils import secure_filename
-from img_etl import make_prediction
+from img_etl import ImageCaptionPredict, make_prediction
 from medbot import predict
 from PIL import Image
 import requests
@@ -110,29 +110,14 @@ def output():
 def uploadImage():
     """Return output of image submission."""
     if request.method == "POST":
-        if 'files[]' not in request.files:
-            resp = jsonify({'message' : 'No file part in the request'})
-            resp.status_code = 400
-            return resp
+        image_path = request.form.get('image_path')
 
-        # Get uploaded files
-        f1 = request.files.getlist('files[]')
+        # img = data_uri_to_cv2_img(image_path)
 
-        # Extract uploaded data files
-        img1_filename = secure_filename(f1[0].filename)
-        img2_filename = secure_filename(f1[0].filename)
+        # model,tokenizer=create_model()
+        predicted_caption=ImageCaptionPredict(image_path)
 
-        # Upload file:
-        f1[0].save(os.path.join(app.config['UPLOAD_FOLDER'], img1_filename))
-        f1[0].save(os.path.join(app.config['UPLOAD_FOLDER'], img2_filename))
-
-        # Create file path:
-        img1_path = os.path.join(app.config['UPLOAD_FOLDER'], img1_filename)
-        img2_path = os.path.join(app.config['UPLOAD_FOLDER'], img2_filename)
-
-        prediction = make_prediction(img1_path, img2_path)
-
-        return prediction
+        return predicted_caption
 
 
 @app.route("/api/chatbot_img_prediction", methods = ["GET","POST"])
