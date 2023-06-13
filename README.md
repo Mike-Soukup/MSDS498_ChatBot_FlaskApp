@@ -1,5 +1,8 @@
 # MSDS 498 Chat Bot Flask App Repo
 
+## Product Demonstration:
+[https://www.youtube.com/watch?v=mLMHo4MMB8Y](Product Overview and Demonstration)
+
 ### To Run:
 
 1. Activate the virtual environment: `source .flaskapp/bin/activate`
